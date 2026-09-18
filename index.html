@@ -1,103 +1,873 @@
 <!DOCTYPE html>
-<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ofertas Premium Shopee</title><style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,Arial,sans-serif;color:#171717;background:#f7f7f8}
-button,input,select,textarea{font:inherit}button{cursor:pointer}
-:root{--primary:#ee4d2d;--secondary:#ff7337;--dark:#171717;--muted:#737373;--border:#e7e7e7;--card:#fff}
-.container{width:min(1180px,calc(100% - 32px));margin:auto}
-.top{background:var(--dark);color:#fff;font-size:13px;padding:9px 0}.top .container{display:flex;justify-content:space-between}
-header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}.nav{height:72px;display:flex;align-items:center;gap:28px}
-.logo{font-size:21px;font-weight:800;white-space:nowrap}.logo span{color:var(--primary)}
-.navlinks{display:flex;gap:20px;flex:1}.navlinks button{border:0;background:none;color:#555;font-weight:600}.navlinks button:hover{color:var(--primary)}
-.search{display:flex;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;width:min(320px,35vw)}.search input{border:0;outline:0;padding:11px 13px;width:100%}.search button{border:0;background:var(--primary);color:#fff;width:45px}
-.hero{margin:28px 0;background:linear-gradient(120deg,#171717,#303030);color:#fff;border-radius:22px;min-height:300px;padding:42px;display:flex;align-items:center;overflow:hidden;position:relative}.hero:after{content:"";position:absolute;width:330px;height:330px;border-radius:50%;background:var(--primary);right:-90px;top:-80px;opacity:.25}
-.hero-content{position:relative;z-index:1;max-width:650px}.hero h1{font-size:42px;line-height:1.05;margin:0 0 14px}.hero p{font-size:17px;color:#ddd;max-width:560px}.btn{border:0;border-radius:11px;padding:12px 18px;font-weight:750;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn-primary{background:var(--primary);color:#fff}.btn-light{background:#fff;color:#171717}
-.section-title{display:flex;justify-content:space-between;align-items:end;margin:30px 0 16px}.section-title h2{margin:0;font-size:24px}.section-title p{margin:5px 0 0;color:var(--muted)}
-.categories{display:flex;gap:10px;overflow:auto;padding-bottom:5px}.cat{border:1px solid var(--border);background:#fff;border-radius:999px;padding:9px 15px;white-space:nowrap;font-weight:650}.cat.active,.cat:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.product{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:.18s}.product:hover{transform:translateY(-3px);box-shadow:0 10px 30px #00000010}.pimg{height:210px;background:#f1f1f1;display:flex;align-items:center;justify-content:center;overflow:hidden}.pimg img{width:100%;height:100%;object-fit:contain;padding:10px;cursor:zoom-in}.thumb{width:52px;height:42px;border-radius:7px;object-fit:contain;background:#eee}.lightbox{position:fixed;inset:0;background:#000d;display:none;align-items:center;justify-content:center;padding:24px;z-index:200;cursor:zoom-out}.lightbox.show{display:flex}.lightbox img{max-width:95vw;max-height:92vh;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 20px 80px #0008}.lightbox .close{position:absolute;top:18px;right:20px;border:0;background:#fff;color:#111;border-radius:50%;width:42px;height:42px;font-size:22px;cursor:pointer}.pbody{padding:14px}.badge{display:inline-block;background:#fff0eb;color:var(--primary);font-size:11px;font-weight:800;padding:5px 8px;border-radius:7px}.product h3{font-size:15px;margin:9px 0 8px;line-height:1.35}.price{font-size:20px;font-weight:850}.old{text-decoration:line-through;color:#999;font-size:12px;margin-left:6px}.pbody .btn{width:100%;margin-top:12px}
-.empty{padding:55px 20px;text-align:center;color:#777;background:#fff;border:1px dashed #ddd;border-radius:16px}
-footer{margin-top:55px;background:#171717;color:#bbb;padding:35px 0}.footerrow{display:flex;justify-content:space-between;gap:20px}.footerrow strong{color:#fff}
+<html lang="pt-BR" class="scroll-smooth" style="background-color: #050505;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDÉXO - Diagnóstico + Soluções Digitais</title>
+    <meta name="description" content="Seu negócio pode ser excelente. Seu digital precisa provar isso. Consultoria de negócios e soluções digitais.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        indexo: {
+                            bg: '#050505',
+                            surface: '#0a0a0a',
+                            border: '#1f1f1f',
+                            text: '#f3f4f6',
+                            muted: '#9ca3af',
+                            accent: '#0055FF', /* Electric Blue */
+                            accentHover: '#0044CC',
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'slide-in-right': 'slideInRight 0.8s ease-out forwards',
+                        'slow-pan': 'pan 20s linear infinite alternate',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { opacity: '0', transform: 'translateX(20px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        pan: {
+                            '0%': { transform: 'scale(1.1) translate(0, 0)' },
+                            '100%': { transform: 'scale(1.1) translate(-2%, -2%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-@media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.navlinks{display:none}.search{width:220px}.hero h1{font-size:34px}}
-@media(max-width:650px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.pimg{height:170px}.hero{padding:28px 22px;min-height:270px}.hero h1{font-size:30px}.top{display:none}.nav{height:62px}.logo{font-size:18px}.search{width:150px}.adminbody{display:block}.side{width:100%;display:flex;overflow:auto;gap:5px;padding:8px}.side button{white-space:nowrap;width:auto}.main{padding:15px}.formgrid{grid-template-columns:1fr}.footerrow{display:block}.cards{gap:8px}.stat b{font-size:22px}}
-</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL='https://alnfzpbciatrclamkied.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_nvsbSdH2xsZTLrbeaR0CTA_JKHbsUKT';
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-</script></head><body>
-<div id="public" class="public">
-<div class="top"><div class="container"><span>Ofertas selecionadas para você</span><span>Compra segura diretamente na Shopee</span></div></div>
-<header><div class="container nav">
-<div class="logo" id="siteLogo">Ofertas <span>Premium</span></div>
-<div class="navlinks">
-<button onclick="showHome()">Início</button><button onclick="showProducts()">Produtos</button><button onclick="filterCategory('Ofertas')">Ofertas</button>
-</div>
-<div class="search"><input id="searchInput" placeholder="Buscar produto..." oninput="renderProducts()"><button>⌕</button></div>
-</div></header>
-<main class="container">
-<section class="hero" id="hero"><div class="hero-content"><h1 id="heroTitle">Super Ofertas do Dia</h1><p id="heroText">As melhores ofertas selecionadas e verificadas para você economizar.</p><button class="btn btn-primary" onclick="showProducts()">Aproveitar ofertas →</button></div></section>
-<section><div class="section-title"><div><h2>Categorias</h2><p>Encontre o que você procura</p></div></div><div class="categories" id="categories"></div></section>
-<section><div class="section-title"><div><h2 id="productsTitle">Produtos em destaque</h2><p>Confira nossas recomendações</p></div></div><div id="productGrid" class="grid"></div></section>
-</main>
-<footer><div class="container footerrow"><div><strong id="footerName">Ofertas Premium</strong><br><span id="footerText">© 2026 Ofertas Premium. Todos os direitos reservados.</span></div><div>Os produtos são vendidos e entregues pela Shopee.</div></div></footer>
-</div>
+    <!-- Custom Styles for Specific Refinements -->
+    <style>
+        html, body {
+            background-color: #050505;
+            color: #f3f4f6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
 
+        /* Subtle noise texture for depth */
+        .noise-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
 
-<div class="lightbox" id="lightbox" onclick="closeImage(event)"><button class="close" onclick="closeImage(event)">×</button><img id="lightboxImg" src="" alt=""></div>
-<div id="toast" class="toast"></div><script>
-const defaults={
- settings:{siteName:'Ofertas Premium Shopee',description:'As melhores ofertas selecionadas e verificadas para você economizar.',buttonText:'Ver na Shopee',footerText:'© 2026 Ofertas Premium. Todos os direitos reservados.',primaryColor:'#ee4d2d',logo:''},
- categories:[{id:'cat1',name:'Eletrônicos',active:true},{id:'cat2',name:'Casa',active:true},{id:'cat3',name:'Moda',active:true},{id:'cat4',name:'Beleza',active:true}],products:[],banners:[],clicks:[],visits:[]
-};
-let db=structuredClone(defaults), currentCategory='Todos', loadingData=false;
-function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
-function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function money(v){return 'R$ '+Number(v||0).toFixed(2).replace('.',',')}
-function showPublic(){document.getElementById('public').classList.remove('hide');renderPublic()}
-function showLogin(){/* ADM removido da vitrine */}
-async function fetchData(){
- if(loadingData)return; loadingData=true;
- try{
-  const [s,c,p,b]=await Promise.all([
-   sb.from('site_settings').select('*').eq('id',1).maybeSingle(),
-   sb.from('categories').select('*').order('sort_order',{ascending:true}),
-   sb.from('products').select('*').order('sort_order',{ascending:true}),
-   sb.from('banners').select('*').order('sort_order',{ascending:true})
-  ]);
-  const err=[s,c,p,b].find(x=>x.error); if(err) throw err.error;
-  db.settings=s.data?{...defaults.settings,...s.data.data}:defaults.settings;
-  db.categories=(c.data?.length?c.data:defaults.categories).map(x=>({...x,sort_order:x.sort_order??x.order??0}));
-  db.products=(p.data||[]).map(x=>({...x,affiliateLink:x.affiliate_link,oldPrice:x.old_price})); db.banners=b.data||[];
-  renderPublic();
- }catch(e){console.error(e);toast('Não foi possível carregar os dados. Confira a configuração do Supabase.')}finally{loadingData=false}
-}
-async function trackEvent(type,productId=null,productName='',path=location.pathname){
- try{await sb.from('analytics_events').insert({event_type:type,product_id:productId,product_name:productName,path})}catch(e){console.warn('analytics',e)}
-}
-function renderPublic(){
- document.documentElement.style.setProperty('--primary',db.settings.primaryColor||'#ee4d2d');
- const logo=document.getElementById('siteLogo'); if(logo) logo.innerHTML=esc(db.settings.siteName).replace(/Shopee/i,'<span>Shopee</span>');
- document.getElementById('footerName').textContent=db.settings.siteName;document.getElementById('footerText').textContent=db.settings.footerText;
- let b=db.banners.find(x=>x.active)||db.banners[0];
- if(b){document.getElementById('heroTitle').textContent=b.title||'';document.getElementById('heroText').textContent=b.subtitle||'';document.getElementById('hero').style.backgroundImage=b.image?'linear-gradient(90deg,#171717e8,#171717b5),url('+JSON.stringify(b.image)+')':'';document.getElementById('hero').style.backgroundSize='cover'}
- document.getElementById('categories').innerHTML='<button class="cat active" onclick="filterCategory(\'Todos\')">Todos</button>'+db.categories.filter(c=>c.active!==false).map(c=>'<button class="cat" onclick="filterCategory('+JSON.stringify(c.name)+')">'+esc(c.name)+'</button>').join('');
- renderProducts();
-}
-function filterCategory(c){currentCategory=c;document.getElementById('productsTitle').textContent=c==='Todos'?'Produtos em destaque':c;renderProducts()}
-function showHome(){currentCategory='Todos';document.getElementById('productsTitle').textContent='Produtos em destaque';window.scrollTo({top:0,behavior:'smooth'});renderProducts()}
-function showProducts(){currentCategory='Todos';document.getElementById('productsTitle').textContent='Todos os produtos';document.getElementById('productGrid').scrollIntoView({behavior:'smooth'});renderProducts()}
-function renderProducts(){
- let q=(document.getElementById('searchInput')?.value||'').toLowerCase();
- let ps=db.products.filter(p=>p.active!==false).filter(p=>(currentCategory==='Todos'||p.category===currentCategory||(currentCategory==='Ofertas'&&p.oldPrice))).filter(p=>(!q||JSON.stringify(p).toLowerCase().includes(q)));
- const grid=document.getElementById('productGrid');
- if(!ps.length){grid.className='';grid.innerHTML='<div class="empty">Nenhum produto cadastrado ainda.<br><small>Adicione produtos pelo Painel ADM.</small></div>';return}
- grid.className='grid';grid.innerHTML=ps.map(p=>`<article class="product"><div class="pimg" onclick="openImage('${esc(p.image||'')}','${esc(p.name)}')">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}">`:'<span>Sem imagem</span>'}</div><div class="pbody">${p.oldPrice?'<span class="badge">OFERTA</span>':''}<h3>${esc(p.name)}</h3><div><span class="price">${money(p.price)}</span>${p.oldPrice?'<span class="old">'+money(p.oldPrice)+'</span>':''}</div><button class="btn btn-primary" onclick="goShopee('${p.id}')">${esc(db.settings.buttonText)}</button></div></article>`).join('')
-}
-async function goShopee(id){let p=db.products.find(x=>x.id===id);if(!p)return;await trackEvent('click',id,p.name);window.open(p.affiliate_link||p.link||'https://shopee.com.br','_blank','noopener')}
-function openImage(src,alt=''){if(!src)return;document.getElementById('lightboxImg').src=src;document.getElementById('lightboxImg').alt=alt;document.getElementById('lightbox').classList.add('show')}
-function closeImage(e){if(e)e.stopPropagation();document.getElementById('lightbox').classList.remove('show')}
-async function boot(){await fetchData();await trackEvent('visit',null,'',location.pathname)}
-window.addEventListener('focus',fetchData);
-window.addEventListener('pageshow',fetchData);
-document.addEventListener('DOMContentLoaded',()=>boot());
-</script><!-- VITRINE ATUALIZADA --></body></html>
+        /* Hero Abstract Lines Canvas */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* Premium Buttons */
+        .btn-primary {
+            background-color: #0055FF;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            /* Força o recorte preciso das bordas arredondadas (Safari/Chrome fix) */
+            transform: translateZ(0); 
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            border: 1px solid transparent;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-25deg);
+            z-index: 1;
+            pointer-events: none;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 4px 20px -2px rgba(0, 85, 255, 0.4), inset 0 1px 1px rgba(255,255,255,0.15);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+        .btn-primary:hover::before {
+            animation: shine-sweep 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes shine-sweep {
+            0% { left: -150%; }
+            100% { left: 150%; }
+        }
+
+        /* Novas Animações da Abertura Premium */
+        @keyframes dropIn {
+            0% { opacity: 0; transform: translateY(-80px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtleShake {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(3px); }
+            50% { transform: translateY(-1px); }
+            75% { transform: translateY(1px); }
+        }
+        .intro-char {
+            display: inline-block;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+        .char-drop {
+            animation: dropIn 0.7s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+        }
+        .shake-effect {
+            animation: subtleShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        .btn-secondary {
+            border: 1px solid #1f1f1f;
+            background-color: transparent;
+            color: #f3f4f6;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            border-color: #333;
+            background-color: rgba(255,255,255,0.03);
+        }
+
+        /* Typography Refinements */
+        h1, h2, h3 {
+            letter-spacing: -0.03em;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #f3f4f6;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-indexo-bg text-indexo-text selection:bg-indexo-accent selection:text-white overflow-hidden">
+
+    <!-- Brand Loader / Intro -->
+    <div id="brand-loader" class="flex items-center justify-center transition-all duration-1000 ease-out origin-center" style="background-color: #050505; position: fixed; inset: 0; top: 0; left: 0; width: 100%; height: 100vh; z-index: 99999;">
+        <!-- Brilho azul extremamente sutil no fundo -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-indexo-accent/5 blur-[100px] rounded-full"></div>
+        </div>
+        
+        <!-- Contêiner do Texto -->
+        <div class="relative z-10 flex text-4xl md:text-6xl font-bold tracking-tighter" id="loader-text-container" aria-label="INDÉXO">
+            <span class="intro-char text-indexo-accent">I</span>
+            <span class="intro-char text-white">N</span>
+            <span class="intro-char text-white">D</span>
+            <span class="intro-char text-white">É</span>
+            <span class="intro-char text-white">X</span>
+            <span class="intro-char text-white">O</span>
+        </div>
+    </div>
+
+    <div class="noise-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-40 bg-indexo-bg/80 backdrop-blur-md border-b border-indexo-border/50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-bold tracking-tighter text-white">
+                INDÉXO
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-indexo-muted">
+                <a href="#inicio" class="nav-link hover:text-white transition-colors">Início</a>
+                <a href="#solucoes" class="nav-link hover:text-white transition-colors">Soluções</a>
+                <a href="#projetos" class="nav-link hover:text-white transition-colors">Projetos</a>
+                <a href="#processo" class="nav-link hover:text-white transition-colors">Processo</a>
+                <a href="#sobre" class="nav-link hover:text-white transition-colors">Sobre</a>
+            </div>
+
+            <!-- CTA -->
+            <div class="hidden md:block">
+                <a href="#contato" class="px-5 py-2.5 rounded-full btn-primary text-sm font-medium tracking-wide">
+                    Falar conosco
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white focus:outline-none" id="mobile-menu-btn" aria-label="Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div class="md:hidden hidden bg-indexo-surface border-b border-indexo-border absolute w-full" id="mobile-menu">
+            <div class="px-6 py-6 space-y-4 flex flex-col">
+                <a href="#inicio" class="text-lg text-indexo-muted hover:text-white transition-colors">Início</a>
+                <a href="#solucoes" class="text-lg text-indexo-muted hover:text-white transition-colors">Soluções</a>
+                <a href="#projetos" class="text-lg text-indexo-muted hover:text-white transition-colors">Projetos</a>
+                <a href="#processo" class="text-lg text-indexo-muted hover:text-white transition-colors">Processo</a>
+                <a href="#sobre" class="text-lg text-indexo-muted hover:text-white transition-colors">Sobre</a>
+                <div class="pt-4 mt-2 border-t border-indexo-border">
+                    <a href="#contato" class="inline-block px-6 py-3 rounded-full btn-primary text-sm font-medium text-center w-full">
+                        Falar conosco
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <!-- Abstract Background Canvas -->
+        <canvas id="hero-canvas"></canvas>
+        
+        <!-- Subtle gradient overlays -->
+        <div class="absolute inset-0 bg-gradient-radial from-transparent via-indexo-bg/80 to-indexo-bg z-10"></div>
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-indexo-accent/5 rounded-full blur-[120px] z-0 mix-blend-screen pointer-events-none"></div>
+
+        <div class="relative z-20 max-w-7xl mx-auto px-6 lg:px-12 w-full">
+            <div class="max-w-4xl">
+                <div class="opacity-0 animate-fade-in-up" style="animation-delay: 0.1s;">
+                    <h1 class="text-5xl md:text-7xl lg:text-[5.5rem] font-medium leading-[1.05] text-white mb-8">
+                        Seu negócio pode ser <span class="text-indexo-accent italic pr-2">excelente.</span><br />
+                        Seu digital precisa <span class="text-indexo-muted">provar isso.</span>
+                    </h1>
+                </div>
+                
+                <div class="opacity-0 animate-fade-in-up" style="animation-delay: 0.3s;">
+                    <p class="text-lg md:text-xl text-indexo-muted max-w-2xl font-light leading-relaxed mb-12">
+                        Diagnóstico estratégico e soluções digitais construídas para transformar necessidades reais em resultados mensuráveis.
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in-up" style="animation-delay: 0.5s;">
+                    <a href="#solucoes" class="px-8 py-4 rounded-full btn-primary text-sm font-medium text-center">
+                        Conheça nossas soluções
+                    </a>
+                    <a href="#contato" class="px-8 py-4 rounded-full btn-secondary text-sm font-medium text-center">
+                        Falar conosco
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Positioning Banner -->
+    <section class="border-y border-indexo-border/50 py-12 overflow-hidden bg-indexo-surface/30">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-wrap justify-between items-center gap-8 text-xs font-semibold tracking-[0.2em] text-indexo-muted">
+            <div class="reveal">DIAGNÓSTICO</div>
+            <div class="hidden sm:block w-1.5 h-1.5 rounded-full bg-indexo-border reveal"></div>
+            <div class="reveal">ESTRATÉGIA</div>
+            <div class="hidden sm:block w-1.5 h-1.5 rounded-full bg-indexo-border reveal"></div>
+            <div class="reveal">DESENVOLVIMENTO</div>
+            <div class="hidden sm:block w-1.5 h-1.5 rounded-full bg-indexo-border reveal"></div>
+            <div class="reveal">IMPLEMENTAÇÃO</div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section id="solucoes" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            
+            <div class="mb-32 reveal text-center md:text-left">
+                <h2 class="text-3xl md:text-5xl font-medium text-white max-w-2xl leading-tight">
+                    O digital certo <span class="text-indexo-muted">começa pelo problema certo.</span>
+                </h2>
+            </div>
+
+            <!-- Asymmetric Editorial Composition -->
+            <div class="relative max-w-5xl mx-auto">
+                <!-- Center Connecting Line -->
+                <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-indexo-border/0 via-indexo-border/50 to-indexo-border/0 transform md:-translate-x-1/2"></div>
+
+                <!-- Solution 01 -->
+                <div class="relative flex flex-col md:flex-row items-center w-full mb-32 group">
+                    <div class="absolute left-6 md:left-1/2 w-3 h-3 bg-indexo-bg border border-indexo-border group-hover:border-indexo-accent rounded-full transform -translate-x-1/2 md:-translate-x-1/2 z-10 transition-colors duration-500 shadow-none group-hover:shadow-[0_0_15px_rgba(0,85,255,0.4)]"></div>
+                    
+                    <div class="w-full md:w-1/2 md:pr-24 text-left md:text-right order-2 md:order-1 pl-16 md:pl-0 mt-6 md:mt-0 reveal">
+                        <h3 class="text-3xl font-medium text-white mb-4 transition-colors group-hover:text-indexo-accent">Presença Digital</h3>
+                        <p class="text-indexo-muted font-light leading-relaxed text-lg">
+                            Sites e experiências digitais que fazem sua empresa ser percebida pelo valor que realmente entrega.
+                        </p>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2 md:pl-24 order-1 md:order-2 pl-16 md:pl-0 reveal">
+                        <div class="text-indexo-muted group-hover:text-indexo-accent transition-colors text-sm font-mono tracking-widest">01 —</div>
+                    </div>
+                </div>
+
+                <!-- Solution 02 -->
+                <div class="relative flex flex-col md:flex-row items-center w-full mb-32 group">
+                    <div class="absolute left-6 md:left-1/2 w-3 h-3 bg-indexo-bg border border-indexo-border group-hover:border-indexo-accent rounded-full transform -translate-x-1/2 md:-translate-x-1/2 z-10 transition-colors duration-500 shadow-none group-hover:shadow-[0_0_15px_rgba(0,85,255,0.4)]"></div>
+                    
+                    <div class="w-full md:w-1/2 md:pr-24 text-left order-1 md:order-1 pl-16 md:pl-0 md:text-right reveal">
+                        <div class="text-indexo-muted group-hover:text-indexo-accent transition-colors text-sm font-mono tracking-widest">02 —</div>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2 md:pl-24 text-left order-2 md:order-2 pl-16 md:pl-0 mt-6 md:mt-0 reveal">
+                        <h3 class="text-3xl font-medium text-white mb-4 transition-colors group-hover:text-indexo-accent">Soluções Sob Medida</h3>
+                        <p class="text-indexo-muted font-light leading-relaxed text-lg">
+                            Ferramentas e sistemas desenvolvidos para necessidades específicas do seu negócio.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Solution 03 -->
+                <div class="relative flex flex-col md:flex-row items-center w-full mb-32 group">
+                    <div class="absolute left-6 md:left-1/2 w-3 h-3 bg-indexo-bg border border-indexo-border group-hover:border-indexo-accent rounded-full transform -translate-x-1/2 md:-translate-x-1/2 z-10 transition-colors duration-500 shadow-none group-hover:shadow-[0_0_15px_rgba(0,85,255,0.4)]"></div>
+                    
+                    <div class="w-full md:w-1/2 md:pr-24 text-left md:text-right order-2 md:order-1 pl-16 md:pl-0 mt-6 md:mt-0 reveal">
+                        <h3 class="text-3xl font-medium text-white mb-4 transition-colors group-hover:text-indexo-accent">Otimização</h3>
+                        <p class="text-indexo-muted font-light leading-relaxed text-lg">
+                            Identificação de processos que podem ser simplificados, automatizados ou melhorados.
+                        </p>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2 md:pl-24 order-1 md:order-2 pl-16 md:pl-0 reveal">
+                        <div class="text-indexo-muted group-hover:text-indexo-accent transition-colors text-sm font-mono tracking-widest">03 —</div>
+                    </div>
+                </div>
+
+                <!-- Solution 04 -->
+                <div class="relative flex flex-col md:flex-row items-center w-full group">
+                    <div class="absolute left-6 md:left-1/2 w-3 h-3 bg-indexo-bg border border-indexo-border group-hover:border-indexo-accent rounded-full transform -translate-x-1/2 md:-translate-x-1/2 z-10 transition-colors duration-500 shadow-none group-hover:shadow-[0_0_15px_rgba(0,85,255,0.4)]"></div>
+                    
+                    <div class="w-full md:w-1/2 md:pr-24 text-left order-1 md:order-1 pl-16 md:pl-0 md:text-right reveal">
+                        <div class="text-indexo-muted group-hover:text-indexo-accent transition-colors text-sm font-mono tracking-widest">04 —</div>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2 md:pl-24 text-left order-2 md:order-2 pl-16 md:pl-0 mt-6 md:mt-0 reveal">
+                        <h3 class="text-3xl font-medium text-white mb-4 transition-colors group-hover:text-indexo-accent">Estratégia Digital</h3>
+                        <p class="text-indexo-muted font-light leading-relaxed text-lg">
+                            Planejamento e implementação de soluções alinhadas aos objetivos da empresa.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Manifesto Section (Replacing Projects) -->
+    <section id="manifesto" class="py-32 bg-indexo-surface/10 border-y border-indexo-border/30 overflow-hidden relative">
+        <!-- Background subtle glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-indexo-accent/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+            <div class="mb-24 reveal text-center">
+                <h2 class="text-3xl md:text-5xl font-medium text-white mb-6">
+                    Do que existe <span class="text-indexo-muted italic">ao que pode existir.</span>
+                </h2>
+                <p class="text-xl text-indexo-muted font-light max-w-2xl mx-auto leading-relaxed">
+                    A Indéxo parte da realidade do negócio para construir soluções digitais que façam sentido nela.
+                </p>
+            </div>
+
+            <!-- Abstract Visual Composition -->
+            <div class="reveal mt-16 max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center justify-center w-full gap-4 md:gap-0">
+                    
+                    <!-- Element 1 -->
+                    <div class="flex flex-col items-center group w-full md:w-auto relative z-10">
+                        <div class="border border-indexo-border/60 bg-indexo-bg/80 backdrop-blur-md px-10 py-5 rounded-full text-indexo-muted tracking-[0.2em] text-xs font-semibold uppercase transition-all duration-500 group-hover:border-indexo-muted/50 group-hover:text-white w-full md:w-auto text-center">
+                            Negócio
+                        </div>
+                    </div>
+
+                    <!-- Line 1 -->
+                    <div class="h-12 w-px md:w-24 md:h-px bg-gradient-to-b md:bg-gradient-to-r from-indexo-border/60 to-indexo-accent/40 my-2 md:my-0 relative z-0"></div>
+
+                    <!-- Element 2 -->
+                    <div class="flex flex-col items-center group w-full md:w-auto relative z-10">
+                        <!-- Pulsing glow effect -->
+                        <div class="absolute inset-0 bg-indexo-accent/20 blur-xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        <div class="relative border border-indexo-accent/40 bg-indexo-bg/90 px-10 py-5 rounded-full text-white tracking-[0.2em] text-xs font-semibold uppercase transition-all duration-500 group-hover:border-indexo-accent w-full md:w-auto text-center shadow-[0_0_20px_rgba(0,85,255,0.15)]">
+                            Diagnóstico
+                        </div>
+                    </div>
+
+                    <!-- Line 2 -->
+                    <div class="h-12 w-px md:w-24 md:h-px bg-gradient-to-b md:bg-gradient-to-r from-indexo-accent/40 to-white/40 my-2 md:my-0 relative z-0"></div>
+
+                    <!-- Element 3 -->
+                    <div class="flex flex-col items-center group w-full md:w-auto relative z-10">
+                        <div class="border border-white/20 bg-white/5 backdrop-blur-md px-10 py-5 rounded-full text-white tracking-[0.2em] text-xs font-semibold uppercase transition-all duration-500 group-hover:border-white/50 group-hover:bg-white/10 w-full md:w-auto text-center">
+                            Solução Digital
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="processo" class="py-32 overflow-hidden bg-indexo-bg relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            
+            <div class="mb-32 reveal text-center">
+                <h2 class="text-3xl md:text-5xl font-medium text-white">
+                    Do diagnóstico <span class="text-indexo-muted">à implementação.</span>
+                </h2>
+            </div>
+
+            <!-- Vertical Scroll Experience -->
+            <div id="process-container" class="relative max-w-4xl mx-auto pb-12">
+                
+                <!-- Background Dim Line -->
+                <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-indexo-border/40 transform md:-translate-x-1/2"></div>
+                
+                <!-- Active Progress Line (Controlled via JS) -->
+                <div id="process-active-line" class="absolute left-6 md:left-1/2 top-0 w-px bg-indexo-accent transform md:-translate-x-1/2 transition-all duration-100 ease-out shadow-[0_0_15px_rgba(0,85,255,0.8)]" style="height: 0%;">
+                    <!-- Leading Glow Dot -->
+                    <div class="absolute -bottom-1 -left-[3px] w-2 h-2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,1)]"></div>
+                </div>
+
+                <div class="space-y-32 relative z-10 pt-4">
+                    
+                    <!-- Step 01 -->
+                    <div class="process-step relative flex flex-col md:flex-row items-center w-full" data-step="1">
+                        <div class="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-indexo-bg border-[1.5px] border-indexo-border transform -translate-x-1/2 md:-translate-x-1/2 transition-all duration-500 process-dot z-10"></div>
+                        
+                        <div class="w-full md:w-1/2 md:pr-20 text-left md:text-right order-2 md:order-1 pl-16 md:pl-0 mt-2 md:mt-0 transition-all duration-700 opacity-30 transform translate-y-4 process-content">
+                            <h4 class="text-2xl font-medium text-white mb-3">Entender</h4>
+                            <p class="text-base text-indexo-muted font-light">Imersão no seu negócio para compreender o contexto real.</p>
+                        </div>
+                        
+                        <div class="w-full md:w-1/2 md:pl-20 order-1 md:order-2 pl-16 md:pl-0 transition-all duration-700 opacity-30 transform translate-y-4 process-content">
+                            <div class="text-indexo-muted text-sm font-mono tracking-widest process-num transition-colors duration-500">01 —</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 02 -->
+                    <div class="process-step relative flex flex-col md:flex-row items-center w-full" data-step="2">
+                        <div class="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-indexo-bg border-[1.5px] border-indexo-border transform -translate-x-1/2 md:-translate-x-1/2 transition-all duration-500 process-dot z-10"></div>
+                        
+                        <div class="w-full md:w-1/2 md:pr-20 text-left order-1 md:order-1 pl-16 md:pl-0 md:text-right transition-all duration-700 opacity-30 transform translate-y-4 process-content">
+                            <div class="text-indexo-muted text-sm font-mono tracking-widest process-num transition-colors duration-500">02 —</div>
+                        </div>
+
+                        <div class="w-full md:w-1/2 md:pl-20 text-left order-2 md:order-2 pl-16 md:pl-0 mt-2 md:mt-0 transition-all duration-700 opacity-30 transform translate-y-4 process-content">
+                            <h4 class="text-2xl font-medium text-white mb-3">Diagnosticar</h4>
+                            <p class="text-base text-indexo-muted font-light">Mapeamento de gargalos e oportunidades digitais.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 03 -->
+                    <div class="process-step relative flex flex-col md:flex-row items-center w-full" data-step="3">
+                        <div class="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-indexo-bg border-[1.5px] border-indexo-border transform -translate-x-1/2 md:-translate-x-1/2 transition-all duration-500 process-dot z-10"></div>
+                        
+                        <div class="w-full md:w-1/2 md:pr-20 text-left md:text-right order-2 md:order-1 pl-16 md:pl-0 mt-2 md:mt-0 transition-all duration-700 opacity-30 transform translate-y-4 process-content">
+                            <h4 class="text-2xl font-medium text-white mb-3">Projetar</h4>
+                            <p class="text-base text-indexo-muted font-light">Desenho técnico e estratégico da solução.</p>
+                        </div>
+                        
+                        <div class="w-full md:w-1/2 md:pl-20 order-1 md:order-2 pl-16 md:pl-0 transition-all duration-700 opacity-30 transform translate-y-4 process-content">
+                            <div class="text-indexo-muted text-sm font-mono tracking-widest process-num transition-colors duration-500">03 —</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 04 -->
+                    <div class="process-step relative flex flex-col md:flex-row items-center w-full" data-step="4">
+                        <div class="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-indexo-bg border-[1.5px] border-indexo-border transform -translate-x-1/2 md:-translate-x-1/2 transition-all duration-500 process-dot z-10"></div>
+                        
+                        <div class="w-full md:w-1/2 md:pr-20 text-left order-1 md:order-1 pl-16 md:pl-0 md:text-right transition-all duration-700 opacity-30 transform translate-y-4 process-content">
+                            <div class="text-indexo-muted text-sm font-mono tracking-widest process-num transition-colors duration-500">04 —</div>
+                        </div>
+
+                        <div class="w-full md:w-1/2 md:pl-20 text-left order-2 md:order-2 pl-16 md:pl-0 mt-2 md:mt-0 transition-all duration-700 opacity-30 transform translate-y-4 process-content">
+                            <h4 class="text-2xl font-medium text-white mb-3">Construir</h4>
+                            <p class="text-base text-indexo-muted font-light">Desenvolvimento preciso focado em performance.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 05 -->
+                    <div class="process-step relative flex flex-col md:flex-row items-center w-full" data-step="5">
+                        <div class="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-indexo-bg border-[1.5px] border-indexo-border transform -translate-x-1/2 md:-translate-x-1/2 transition-all duration-500 process-dot z-10"></div>
+                        
+                        <div class="w-full md:w-1/2 md:pr-20 text-left md:text-right order-2 md:order-1 pl-16 md:pl-0 mt-2 md:mt-0 transition-all duration-700 opacity-30 transform translate-y-4 process-content">
+                            <h4 class="text-2xl font-medium text-white mb-3">Implementar</h4>
+                            <p class="text-base text-indexo-muted font-light">Entrega, treinamento e monitoramento de resultados.</p>
+                        </div>
+                        
+                        <div class="w-full md:w-1/2 md:pl-20 order-1 md:order-2 pl-16 md:pl-0 transition-all duration-700 opacity-30 transform translate-y-4 process-content">
+                            <div class="text-indexo-muted text-sm font-mono tracking-widest process-num transition-colors duration-500">05 —</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contato" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-indexo-surface border-t border-indexo-border/50"></div>
+        
+        <!-- Subtle radial glow -->
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-64 bg-indexo-accent/5 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center reveal">
+            <h2 class="text-4xl md:text-6xl font-medium text-white mb-8 leading-tight">
+                Existe um problema no seu negócio que poderia ser <span class="text-indexo-muted italic">resolvido digitalmente?</span>
+            </h2>
+            <p class="text-xl text-indexo-muted mb-12 font-light">
+                Vamos transformar a necessidade em uma solução.
+            </p>
+            <a href="mailto:contato@indexo.com.br" class="inline-block px-10 py-5 rounded-full btn-primary text-base font-medium">
+                Falar com a Indéxo
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-indexo-bg py-12 border-t border-indexo-border/50 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-8">
+            
+            <div class="text-center md:text-left">
+                <div class="text-2xl font-bold tracking-tighter text-white mb-2">INDÉXO</div>
+                <p class="text-sm text-indexo-muted font-light">Diagnóstico + soluções digitais.</p>
+            </div>
+
+            <div class="flex flex-col items-center md:items-end gap-2 text-sm">
+                <a href="https://instagram.com/i.ndexo" target="_blank" rel="noopener noreferrer" class="text-indexo-muted hover:text-white transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    Instagram: @i.ndexo
+                </a>
+                <span class="text-indexo-border mt-2">&copy; <span id="year"></span> Indéxo. Todos os direitos reservados.</span>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2', 'bg-indexo-bg/95');
+                navbar.classList.remove('py-4', 'bg-indexo-bg/80');
+            } else {
+                navbar.classList.add('py-4', 'bg-indexo-bg/80');
+                navbar.classList.remove('py-2', 'bg-indexo-bg/95');
+            }
+        }, { passive: true });
+
+        // Scroll Reveal Animation (Corrigido com IntersectionObserver)
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("active");
+                    // Unobserve: Garante que o conteúdo NUNCA mais desapareça após ser revelado
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15 // Aciona quando 15% do elemento está visível
+        });
+
+        document.querySelectorAll(".reveal").forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // Animação Contínua da Linha do Processo
+        function updateProcessLine() {
+            const container = document.getElementById('process-container');
+            const activeLine = document.getElementById('process-active-line');
+            if (!container || !activeLine) return;
+
+            const rect = container.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Ponto de gatilho visualmente centralizado na tela
+            const triggerPoint = windowHeight * 0.55;
+            
+            // Progresso atrelado milimetricamente ao scroll do usuário
+            let progress = triggerPoint - rect.top;
+            
+            // Trava os limites da linha (nunca menor que 0, nunca maior que o container)
+            if (progress < 0) progress = 0;
+            if (progress > rect.height) progress = rect.height;
+            
+            // Uso de requestAnimationFrame para extrema fluidez visual sem pesar o navegador
+            requestAnimationFrame(() => {
+                activeLine.style.height = `${progress}px`;
+
+                const steps = document.querySelectorAll('.process-step');
+                steps.forEach(step => {
+                    const stepDot = step.querySelector('.process-dot');
+                    const stepContents = step.querySelectorAll('.process-content');
+                    const num = step.querySelector('.process-num');
+                    
+                    const stepTop = step.offsetTop;
+                    // Buffer sutil para a bolinha acender apenas quando a linha cruzar exatamente seu centro
+                    const activationPoint = stepTop + 15;
+
+                    if (progress >= activationPoint) {
+                        stepDot.classList.replace('border-indexo-border', 'border-indexo-accent');
+                        stepDot.classList.add('shadow-[0_0_15px_rgba(0,85,255,0.7)]', 'bg-indexo-accent', 'scale-125');
+                        stepDot.classList.remove('bg-indexo-bg');
+                        
+                        stepContents.forEach(c => {
+                            c.classList.remove('opacity-30', 'translate-y-4');
+                            c.classList.add('opacity-100', 'translate-y-0');
+                        });
+                        
+                        if(num) {
+                            num.classList.replace('text-indexo-muted', 'text-indexo-accent');
+                            num.classList.add('text-white', 'scale-110', 'transition-all', 'duration-500'); 
+                        }
+                    } else {
+                        stepDot.classList.replace('border-indexo-accent', 'border-indexo-border');
+                        stepDot.classList.remove('shadow-[0_0_15px_rgba(0,85,255,0.7)]', 'bg-indexo-accent', 'scale-125');
+                        stepDot.classList.add('bg-indexo-bg');
+                        
+                        stepContents.forEach(c => {
+                            c.classList.remove('opacity-100', 'translate-y-0');
+                            c.classList.add('opacity-30', 'translate-y-4');
+                        });
+                        
+                        if(num) {
+                            num.classList.replace('text-indexo-accent', 'text-indexo-muted');
+                            num.classList.remove('text-white', 'scale-110');
+                        }
+                    }
+                });
+            });
+        }
+        
+        // Listeners otimizados (passive: true melhora muito a performance de scroll no mobile)
+        window.addEventListener('scroll', updateProcessLine, { passive: true });
+        window.addEventListener('resize', updateProcessLine, { passive: true });
+        
+        // Chamada inicial
+        updateProcessLine();
+
+        // Abstract Canvas Animation (Elegant lines)
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let lines = [];
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initLines();
+        }
+        
+        class Line {
+            constructor(yOffset) {
+                this.points = [];
+                this.yOffset = yOffset;
+                this.baseY = height * 0.5 + yOffset;
+                this.amplitude = Math.random() * 80 + 20;
+                this.frequency = Math.random() * 0.002 + 0.001;
+                this.speed = Math.random() * 0.01 + 0.005;
+                this.phase = Math.random() * Math.PI * 2;
+                
+                // Colors inspired by reference (subtle blues/grays)
+                const opacities = [0.03, 0.05, 0.08];
+                this.opacity = opacities[Math.floor(Math.random() * opacities.length)];
+            }
+            
+            draw(ctx, time) {
+                ctx.beginPath();
+                ctx.moveTo(0, this.baseY);
+                
+                for (let x = 0; x <= width; x += 20) {
+                    // Create gentle wave motion
+                    let y = this.baseY + 
+                            Math.sin(x * this.frequency + time * this.speed + this.phase) * this.amplitude +
+                            Math.cos(x * this.frequency * 0.5 - time * this.speed * 0.8) * (this.amplitude * 0.5);
+                    ctx.lineTo(x, y);
+                }
+                
+                ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+        
+        function initLines() {
+            lines = [];
+            const numLines = window.innerWidth > 768 ? 15 : 8; // Fewer lines on mobile
+            for (let i = 0; i < numLines; i++) {
+                // Distribute lines mostly around center, but some spread out
+                let offset = (Math.random() - 0.5) * height * 0.8;
+                lines.push(new Line(offset));
+            }
+        }
+        
+        let animationTime = 0;
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw gradient background in canvas for better blending
+            const gradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width);
+            gradient.addColorStop(0, 'rgba(0, 85, 255, 0.02)');
+            gradient.addColorStop(1, 'rgba(5, 5, 5, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            lines.forEach(line => {
+                line.draw(ctx, animationTime);
+            });
+            
+            animationTime += 1;
+            requestAnimationFrame(animateCanvas);
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+        animateCanvas();
+
+        // --- LÓGICA DO BRAND LOADER / ABERTURA ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('brand-loader');
+            const container = document.getElementById('loader-text-container');
+            const chars = document.querySelectorAll('.intro-char');
+            
+            // Força o scroll para o topo e previne que o navegador tente restaurar posição antiga
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            window.scrollTo(0, 0);
+
+            // Verifica preferência de redução de movimento
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (prefersReducedMotion) {
+                chars.forEach(char => {
+                    char.style.opacity = '1';
+                    char.style.transform = 'translateY(0)';
+                });
+                setTimeout(finishLoader, 1500);
+            } else {
+                // Etapa 1: Fundo escuro garantido inline, espera um breve instante
+                setTimeout(() => {
+                    
+                    // Etapa 2: A letra 'I' (azul) cai primeiro com impacto
+                    chars[0].classList.add('char-drop');
+                    
+                    // Micro-impacto (shake sutil e sofisticado) sincronizado com a aterrissagem do 'I'
+                    setTimeout(() => {
+                        container.classList.add('shake-effect');
+                    }, 500); // Aos 500ms do drop que dura 700ms
+
+                    // Etapa 3: Restante das letras caem em sequência refinada
+                    chars.forEach((char, index) => {
+                        if (index === 0) return; // Pula o 'I'
+                        
+                        setTimeout(() => {
+                            char.classList.add('char-drop');
+                            
+                            // Etapas 4 e 5: Quando a última letra terminar, aguarda e transiciona
+                            if (index === chars.length - 1) {
+                                setTimeout(finishLoader, 700 + 500); // 700ms da última animação + 500ms de contemplação
+                            }
+                        }, 700 + (index * 120)); // Espera o 'I' quase assentar, depois cria cascata
+                    });
+
+                }, 300); // Breve espera na tela preta inicial (300ms)
+            }
+
+            function finishLoader() {
+                // Fade cinematográfico revelando o site (opacidade + leve expansão sem zoom brusco)
+                loader.classList.add('opacity-0', 'scale-105');
+                loader.style.pointerEvents = 'none';
+                
+                setTimeout(() => {
+                    // Libera a navegação e limpa o elemento
+                    loader.remove(); 
+                    document.body.classList.remove('overflow-hidden');
+                }, 1000); // Sincronizado com `duration-1000` do Tailwind
+            }
+        });
+
+    </script>
+</body>
+</html>
