@@ -97,6 +97,38 @@ const $=id=>document.getElementById(id);function toast(t){$('toast').textContent
 async function login(){let email=$('email').value.trim(),password=$('password').value;if(!email||!password)return toast('Informe e-mail e senha');let {error}=await sb.auth.signInWithPassword({email,password});if(error)return toast(error.message);$('login').classList.remove('show');$('app').classList.add('show');await loadData();page('dashboard')}async function logout(){await sb.auth.signOut();$('app').classList.remove('show');$('login').classList.add('show')}
 async function loadData(){try{let [s,c,p,b]=await Promise.all([sb.from('site_settings').select('*').eq('id',1).maybeSingle(),sb.from('categories').select('*').order('sort_order'),sb.from('products').select('*').order('sort_order'),sb.from('banners').select('*').order('sort_order')]);let err=[s,c,p,b].find(x=>x.error);if(err)throw err.error;db.settings=s.data?{...defaults.settings,...s.data.data}:defaults.settings;db.categories=c.data||[];db.products=(p.data||[]).map(x=>({...x,oldPrice:x.old_price,affiliateLink:x.affiliate_link}));db.banners=b.data||[]}catch(e){console.error(e);toast('Erro ao carregar dados do Supabase')}}
 function page(p){document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x.dataset.page===p));let c=$('content');if(p==='dashboard')return dashboard(c);if(p==='produtos')return products(c);if(p==='categorias')return categories(c);if(p==='banners')return banners(c);if(p==='config')return config(c)}
+async function config(c){
+  const s={...defaults.settings,...db.settings};
+  c.innerHTML=`
+    <div class="pagehead"><div><h1>Configurações</h1><p class="sub">Personalize as informações básicas da sua vitrine.</p></div></div>
+    <div class="panel">
+      <div class="panelhead"><h2>Informações do site</h2></div>
+      <div class="formgrid">
+        <div class="field"><label>Nome da loja</label><input id="cfgSiteName" value="${esc(s.siteName||'')}"></div>
+        <div class="field"><label>Texto do botão</label><input id="cfgButtonText" value="${esc(s.buttonText||'Ver na Shopee')}"></div>
+        <div class="field full"><label>Descrição</label><textarea id="cfgDescription">${esc(s.description||'')}</textarea></div>
+        <div class="field full"><label>Texto do rodapé</label><input id="cfgFooterText" value="${esc(s.footerText||'')}"></div>
+        <div class="field"><label>Cor principal</label><div class="color-field"><input id="cfgPrimaryColor" type="color" value="${/^#[0-9a-f]{6}$/i.test(s.primaryColor||'')?s.primaryColor:'#ee4d2d'}"><span>Usada nos principais botões e destaques.</span></div></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:18px"><button class="btn btn-primary" onclick="saveSettings()">Salvar configurações</button></div>
+    </div>`;
+}
+async function saveSettings(){
+  try{
+    const data={
+      siteName:$('cfgSiteName').value.trim()||defaults.settings.siteName,
+      description:$('cfgDescription').value.trim(),
+      buttonText:$('cfgButtonText').value.trim()||defaults.settings.buttonText,
+      footerText:$('cfgFooterText').value.trim(),
+      primaryColor:$('cfgPrimaryColor').value||defaults.settings.primaryColor,
+      logo:db.settings.logo||''
+    };
+    const r=await sb.from('site_settings').upsert({id:1,data},{onConflict:'id'});
+    if(r.error) throw r.error;
+    db.settings={...db.settings,...data};
+    toast('Configurações salvas');
+  }catch(e){console.error(e);toast('Erro ao salvar configurações: '+(e.message||'erro'))}
+}
 async function dashboard(c){let r=await sb.from('analytics_events').select('event_type,product_name,created_at').order('created_at',{ascending:false}).limit(1000);let ev=r.data||[];let visits=ev.filter(x=>x.event_type==='visit').length,clicks=ev.filter(x=>x.event_type==='click').length;c.innerHTML=`<div class="pagehead"><div><h1>Dashboard</h1><p class="sub">Visão geral da sua vitrine.</p></div><button class="btn btn-primary" onclick="editProduct('')">+ Novo produto</button></div><div class="cards"><div class="stat"><small>Visitas registradas</small><b>${visits}</b></div><div class="stat"><small>Cliques na Shopee</small><b>${clicks}</b></div><div class="stat"><small>Produtos</small><b>${db.products.length}</b></div><div class="stat"><small>Categorias</small><b>${db.categories.length}</b></div></div><div class="panel"><h2>Banco online conectado</h2><p class="sub" style="margin-top:8px">Produtos, categorias, banners e configurações são compartilhados entre o ADM e a vitrine pelo Supabase.</p></div>`}
 function products(c){c.innerHTML=`<div class="pagehead"><div><h1>Produtos</h1><p class="sub">Cadastre e organize seus produtos de afiliado.</p></div><button class="btn btn-primary" onclick="editProduct('')">+ Novo produto</button></div><div class="panel"><div class="tablewrap"><table><thead><tr><th>Foto</th><th>Produto</th><th>Preço</th><th>Status</th><th>Ações</th></tr></thead><tbody>${db.products.map(p=>`<tr><td><img class="thumb" src="${esc(parseImages(p)[0]||'')}"></td><td><b>${esc(p.name)}</b><br><small>${esc(p.category||'')} ${parseImages(p).length>1?'· '+parseImages(p).length+' fotos':''}</small></td><td>${money(p.price)}</td><td>${p.active!==false?'Ativo':'Inativo'}</td><td><div class="actions"><button class="mini" onclick="editProduct('${p.id}')">Editar</button><button class="mini" onclick="toggleProduct('${p.id}',${p.active===false})">${p.active===false?'Ativar':'Desativar'}</button><button class="mini danger" onclick="deleteProduct('${p.id}')">Excluir</button></div></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Nenhum produto cadastrado.</td></tr>'}</tbody></table></div></div>`}
 function renderPhotos(){let box=$('photos');if(!box)return;box.innerHTML=editingImages.length?editingImages.map((x,i)=>`<div class="photo ${i===0?'main':''}">${i===0?'<span class="badge">PRINCIPAL</span>':''}<img src="${esc(x)}"><div class="photo-actions"><button onclick="setMain(${i})">Principal</button><button onclick="openEditor(${i})">Editar</button><button onclick="removePhoto(${i})">Excluir</button></div></div>`).join(''):'<div style="grid-column:1/-1;text-align:center;color:#888;padding:16px">Nenhuma foto adicionada.</div>'}
