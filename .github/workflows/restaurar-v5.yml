@@ -1,0 +1,32 @@
+name: Restaurar V5 da vitrine
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  restore-v5:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restaurar arquivos V5
+        shell: bash
+        run: |
+          set -e
+          awk '/^[[:space:]]*PAYLOAD: \|/{flag=1;next}/^[[:space:]]*- name: Escrever arquivos/{flag=0}flag{sub(/^[[:space:]]{12}/,""); print}' .github/workflows/publicar-v5.yml | tr -d '\r' | base64 -d | gzip -d > /tmp/v5.html
+          test -s /tmp/v5.html
+          cp /tmp/v5.html index.html
+          cp /tmp/v5.html vitrine/index.html
+      - name: Publicar V5 no GitHub
+        shell: bash
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html vitrine/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Restaura versão V5 real da vitrine"
+          git push
