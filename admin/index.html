@@ -123,7 +123,7 @@ async function loadData(retries=4){
   toast('Não foi possível conectar ao Supabase. Tentando novamente...');
   return false;
 }
-function page(p){document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x.dataset.page===p));let c=$('content');if(p==='dashboard')return dashboard(c);if(p==='produtos')return products(c);if(p==='categorias')return categories(c);if(p==='banners')return banners(c);if(p==='config')return config(c)}
+function page(p){document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x.dataset.page===p));let c=$('content');try{if(p==='dashboard')return dashboard(c);if(p==='produtos')return products(c);if(p==='categorias')return categories(c);if(p==='banners')return banners(c);if(p==='config')return Promise.resolve(config(c)).catch(e=>{console.error('Configurações:',e);c.innerHTML='<div class="panel"><h2>Configurações</h2><p class="sub">Erro ao abrir configurações: '+esc(e?.message||e)+'</p><button class="btn btn-primary" onclick="page(\'config\')">Tentar novamente</button></div>'})}catch(e){console.error('Página:',e);toast('Erro ao abrir esta seção: '+(e?.message||e))}}
 async function uploadSettingMedia(file,kind){
   const ext=(file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
   const path=\`settings/\${kind}-\${Date.now()}-\${Math.random().toString(36).slice(2,8)}.\${ext}\`;
@@ -166,7 +166,7 @@ function renderSettingPreviews(s){
   if(lp)lp.innerHTML=s.logo?'<img src="'+esc(s.logo)+'" style="max-width:220px;max-height:90px;object-fit:contain">':'<span style="color:#888">Sem logotipo</span>';
   if(bp)bp.innerHTML=s.background?.image?'<img src="'+esc(s.background.image)+'" style="width:100%;max-height:220px;object-fit:cover">':'<span style="color:#888">Sem imagem de fundo</span>';
 }
-async function config(c){
+function config(c){
   const s={...defaults.settings,...db.settings,background:{...defaults.settings.background,...(db.settings.background||{})},fonts:{...defaults.settings.fonts,...(db.settings.fonts||{})}};
   c.innerHTML=\`
     <div class="pagehead"><div><h1>Configurações</h1><p class="sub">Controle visual completo da vitrine, identidade, botões e textos.</p></div></div>
