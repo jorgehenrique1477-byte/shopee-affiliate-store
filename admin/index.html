@@ -94,7 +94,36 @@ body.dark .previewbanner{background:#0e1217;border-color:#343b46}.previewbanner 
 <script>
 const defaults={settings:{siteName:'Ofertas Premium Shopee',description:'As melhores ofertas selecionadas e verificadas para você economizar.',buttonText:'Ver na Shopee',footerText:'© 2026 Ofertas Premium. Todos os direitos reservados.',primaryColor:'#ee4d2d',secondaryColor:'#171717',buttonColor:'#171717',background:{type:'color',color:'#f6f6f4',image:''},logo:'',fonts:{body:'Inter',heading:'Inter',logo:'Inter',button:'Inter'}},categories:[],products:[],banners:[]};let db=structuredClone(defaults),editingImages=[];
 const $=id=>document.getElementById(id);function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2400)}function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}function money(v){return 'R$ '+Number(v||0).toFixed(2).replace('.',',')}function parseImages(p){let raw=p?.image||'';if(Array.isArray(p?.images)&&p.images.length)return p.images.filter(Boolean);if(typeof raw==='string'&&raw.trim().startsWith('[')){try{let a=JSON.parse(raw);if(Array.isArray(a))return a.filter(Boolean)}catch(e){}}return raw?[raw]:[]}
-async function login(){let email=$('email').value.trim(),password=$('password').value;if(!email||!password)return toast('Informe e-mail e senha');let {error}=await sb.auth.signInWithPassword({email,password});if(error)return toast(error.message);$('login').classList.remove('show');$('app').classList.add('show');await loadData();page('dashboard')}async function logout(){await sb.auth.signOut();$('app').classList.remove('show');$('login').classList.add('show')}
+async function login(){
+  const email=$('email').value.trim();
+  const password=$('password').value;
+  const btn=document.querySelector('#login button[onclick="login()"]');
+  if(!email||!password)return toast('Informe e-mail e senha');
+  if(btn){btn.disabled=true;btn.textContent='Entrando...';}
+  try{
+    const {data,error}=await sb.auth.signInWithPassword({email,password});
+    if(error){
+      console.error('Login Supabase:',error);
+      let msg=error.message||'Não foi possível entrar';
+      if(error.message==='Invalid login credentials')msg='E-mail ou senha incorretos.';
+      if(error.message?.toLowerCase().includes('email not confirmed'))msg='Este e-mail ainda não foi confirmado no Supabase.';
+      toast(msg);
+      return;
+    }
+    const {data:sessionData,error:sessionError}=await sb.auth.getSession();
+    if(sessionError||!sessionData?.session){
+      console.error('Sessão não criada:',sessionError);
+      toast('A senha foi aceita, mas a sessão não foi criada. Tente novamente.');
+      return;
+    }
+    await bootAdmin(sessionData.session);
+  }catch(e){
+    console.error('Erro no login:',e);
+    toast('Erro ao entrar: '+(e?.message||'tente novamente'));
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='Entrar no painel';}
+  }
+}async function logout(){await sb.auth.signOut();$('app').classList.remove('show');$('login').classList.add('show')}
 async function loadData(retries=4){
   let lastError=null;
   for(let attempt=0;attempt<retries;attempt++){
