@@ -1,4 +1,4 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Painel ADM — Ofertas Premium</title><!-- ADM v2: configuracoes + supabase sync --><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>const SUPABASE_URL='https://alnfzpbciatrclamkied.supabase.co';const SUPABASE_ANON_KEY='sb_publishable_nvsbSdH2xsZTLrbeaR0CTA_JKHbsUKT';const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}});</script><style>
+<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Painel ADM — Ofertas Premium</title><!-- ADM v2: configuracoes + supabase sync --><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>const SUPABASE_URL='https://alnfzpbciatrclamkied.supabase.co';const SUPABASE_ANON_KEY='sb_publishable_nvsbSdH2xsZTLrbeaR0CTA_JKHbsUKT';const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true},global:{fetch:(url,options={})=>fetch(url,{...options,cache:'no-store'})}});</script><style>
 *{box-sizing:border-box}:root{--primary:#ee4d2d;--dark:#171717;--muted:#707070;--line:#e9e9e9;--bg:#f5f6f8;--card:#fff}html,body{margin:0;font-family:Inter,Arial,sans-serif;color:#171717;background:var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer}.login{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at top,#fff,#eef0f3)}.login.show{display:flex}.loginbox{width:min(430px,100%);background:#fff;border:1px solid #e5e5e5;border-radius:22px;padding:30px;box-shadow:0 24px 80px #00000012}.brand{font-size:22px;font-weight:900}.brand span{color:var(--primary)}.field{display:flex;flex-direction:column;gap:6px;margin:12px 0}.field label{font-size:12px;font-weight:800;color:#444}.field input,.field select,.field textarea{border:1px solid #ddd;border-radius:10px;padding:11px;outline:none;background:#fff}.field textarea{min-height:100px;resize:vertical}.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:800;background:#eee;color:#222;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn-primary{background:var(--primary);color:#fff}.btn-dark{background:var(--dark);color:#fff}.app{display:none;min-height:100vh}.app.show{display:block}.topbar{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:50}.top-actions{display:flex;gap:8px}.layout{display:flex;min-height:calc(100vh - 64px)}.sidebar{width:240px;background:#fff;border-right:1px solid var(--line);padding:18px 12px}.side-title{padding:8px 12px 15px;font-size:11px;color:#999;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.navbtn{width:100%;border:0;background:none;text-align:left;padding:12px;border-radius:10px;font-weight:750;color:#555;margin:2px 0}.navbtn:hover,.navbtn.active{background:#fff1ed;color:var(--primary)}.content{width:100%;padding:28px;overflow:auto}.pagehead{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px}h1{font-size:27px;margin:0 0 5px}h2{font-size:19px;margin:0}.sub{color:var(--muted);margin:0;font-size:14px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}.stat small{color:#888;font-weight:700}.stat b{display:block;font-size:28px;margin-top:7px}.panel{background:#fff;border:1px solid var(--line);border-radius:17px;padding:20px;margin-bottom:18px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:13px 9px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:middle}th{font-size:11px;color:#888;text-transform:uppercase}.thumb{width:58px;height:58px;object-fit:contain;background:#f5f5f5;border-radius:9px;border:1px solid #eee}.actions{display:flex;gap:6px;flex-wrap:wrap}.mini{border:1px solid #ddd;background:#fff;border-radius:8px;padding:7px 9px;font-size:12px;font-weight:700}.danger{color:#c62828}.modalback,.editorback{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modalback.show,.editorback.show{display:flex}.modal{background:#fff;width:min(780px,100%);max-height:92vh;overflow:auto;border-radius:19px;padding:22px}.modalhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.close{border:0;background:#eee;border-radius:9px;width:36px;height:36px;font-size:18px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.full{grid-column:1/-1}.checks{display:flex;gap:18px;flex-wrap:wrap;padding:8px 0}.checks label{font-weight:700;font-size:13px}.photo-manager{border:1px solid #e3e3e3;border-radius:14px;background:#fafafa;padding:14px}.photo-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.drop{border:2px dashed #d7d7d7;background:#fff;border-radius:12px;padding:19px;text-align:center;color:#666;transition:.15s}.drop.drag{border-color:var(--primary);background:#fff5f2}.photos{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}.photo{position:relative;background:#fff;border:1px solid #ddd;border-radius:11px;padding:5px}.photo.main{border:2px solid var(--primary)}.photo img{display:block;width:100%;aspect-ratio:1;object-fit:contain;background:#f5f5f5;border-radius:7px}.badge{position:absolute;top:8px;left:8px;background:var(--primary);color:#fff;font-size:9px;font-weight:900;padding:4px 6px;border-radius:999px}.photo-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-top:5px}.photo-actions button{border:1px solid #ddd;background:#fff;border-radius:7px;padding:5px;font-size:10px;font-weight:700}.editor{width:min(1080px,100%);max-height:95vh;overflow:auto;background:#fff;border-radius:19px;padding:18px}.editorgrid{display:grid;grid-template-columns:1fr 300px;gap:15px}.canvaswrap{min-height:500px;background:#181818;border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:center;overflow:auto}#canvas{max-width:100%;max-height:68vh;background:#fff}.controls{display:flex;flex-direction:column;gap:10px}.control{background:#f7f7f7;border:1px solid #e7e7e7;border-radius:11px;padding:10px}.control label{font-size:12px;font-weight:800;display:flex;justify-content:space-between;margin-bottom:7px}.control input[type=range]{width:100%}.toolgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.toolgrid button,.ratios button{border:1px solid #ddd;background:#fff;border-radius:8px;padding:8px;font-size:12px;font-weight:700}.ratios{display:flex;gap:6px;flex-wrap:wrap}.editorfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:13px}.toast{position:fixed;right:20px;bottom:20px;background:#151515;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:400}.toast.show{display:block}.empty{text-align:center;color:#888;padding:35px}@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.sidebar{width:205px}.editorgrid{grid-template-columns:1fr}.canvaswrap{min-height:360px}}@media(max-width:650px){.topbar{padding:0 12px;height:58px}.top-actions .btn:first-child{display:none}.layout{display:block}.sidebar{width:100%;display:flex;overflow:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line);gap:4px}.side-title{display:none}.navbtn{white-space:nowrap;width:auto}.content{padding:14px}.cards{gap:8px}.stat{padding:13px}.stat b{font-size:22px}.pagehead{align-items:flex-start;flex-direction:column}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.photos{grid-template-columns:repeat(2,1fr)}.modal{padding:16px}}
 
 /* POLIMENTO VISUAL — funcionalidades preservadas */
@@ -283,6 +283,8 @@ function toggleBgMode(){
 }
 async function saveSettings(){
   try{
+    const {data:sessionData,error:sessionError}=await sb.auth.getSession();
+    if(sessionError||!sessionData?.session) return toast('Sessão expirada. Entre novamente no painel.');
     const data={
       siteName:$('cfgSiteName').value.trim()||defaults.settings.siteName,
       description:$('cfgDescription').value.trim(),
@@ -292,36 +294,34 @@ async function saveSettings(){
       secondaryColor:$('cfgSecondaryText').value.trim()||$('cfgSecondaryColor').value||defaults.settings.secondaryColor,
       buttonColor:$('cfgButtonTextColor').value.trim()||$('cfgButtonColor').value||defaults.settings.buttonColor,
       logo:$('cfgLogo').value.trim(),
-      background:{
-        type:$('cfgBgType').value,
-        color:$('cfgBgText').value.trim()||$('cfgBgColor').value||defaults.settings.background.color,
-        image:$('cfgBgImage').value.trim()
-      },
-      fonts:{
-        body:$('cfgFontBody').value,
-        heading:$('cfgFontHeading').value,
-        logo:$('cfgFontLogo').value,
-        button:$('cfgFontButton').value
-      }
+      background:{type:$('cfgBgType').value,color:$('cfgBgText').value.trim()||$('cfgBgColor').value||defaults.settings.background.color,image:$('cfgBgImage').value.trim()},
+      fonts:{body:$('cfgFontBody').value,heading:$('cfgFontHeading').value,logo:$('cfgFontLogo').value,button:$('cfgFontButton').value}
     };
-    const r=await sb.from('site_settings').upsert({id:1,data},{onConflict:'id'});
+    const r=await sb.from('site_settings').upsert({id:1,data:data},{onConflict:'id',ignoreDuplicates:false}).select('id,data').single();
     if(r.error)throw r.error;
-    db.settings=data;
+    if(!r.data?.data)throw new Error('O Supabase não confirmou a gravação das configurações.');
+    db.settings=r.data.data;
     await loadData(2);
+    if(JSON.stringify(db.settings)!==JSON.stringify(data))throw new Error('A gravação foi aceita, mas os dados retornados não conferem.');
     page('config');
-    toast('Todas as configurações foram salvas');
+    toast('Configurações salvas no banco e sincronizadas com a vitrine');
   }catch(e){console.error(e);toast('Erro ao salvar configurações: '+(e.message||'erro'))}
 }
 async function resetAnalytics(type){
   const label=type==='visit'?'visitas':type==='click'?'cliques':'visitas e cliques';
   if(!confirm('Zerar '+label+'? Esta ação não pode ser desfeita.'))return;
   try{
+    const {data:sessionData,error:sessionError}=await sb.auth.getSession();
+    if(sessionError||!sessionData?.session)throw new Error('Sessão expirada. Entre novamente.');
     let q=sb.from('analytics_events').delete();
     if(type!=='all')q=q.eq('event_type',type);
-    const r=await q;
+    const r=await q.select('id');
     if(r.error)throw r.error;
-    toast('Contador de '+label+' zerado');
-    if($('content'))await dashboard($('content'));
+    const remaining=await sb.from('analytics_events').select('id',{count:'exact',head:true}).eq(type==='all'?'id':'event_type',type==='all'?'00000000-0000-0000-0000-000000000000':type);
+    if(remaining.error)throw remaining.error;
+    if((remaining.count||0)>0)throw new Error('O banco não confirmou o zeramento. Verifique as permissões do Supabase.');
+    toast('Contador de '+label+' zerado no banco');
+    await dashboard($('content'));
   }catch(e){console.error(e);toast('Não foi possível zerar: '+(e.message||'erro'))}
 }
 async function dashboard(c){let r=await sb.from('analytics_events').select('event_type,product_name,created_at').order('created_at',{ascending:false}).limit(1000);let ev=r.data||[];let visits=ev.filter(x=>x.event_type==='visit').length,clicks=ev.filter(x=>x.event_type==='click').length;c.innerHTML=`<div class="pagehead"><div><h1>Dashboard</h1><p class="sub">Visão geral da sua vitrine.</p></div><button class="btn btn-primary" onclick="editProduct('')">+ Novo produto</button></div><div class="cards"><div class="stat"><small>Visitas registradas</small><b>${visits}</b></div><div class="stat"><small>Cliques na Shopee</small><b>${clicks}</b></div><div class="stat"><small>Produtos</small><b>${db.products.length}</b></div><div class="stat"><small>Categorias</small><b>${db.categories.length}</b></div></div><div class="panel"><h2>Banco online conectado</h2><p class="sub" style="margin-top:8px">Produtos, categorias, banners e configurações são compartilhados entre o ADM e a vitrine pelo Supabase.</p></div>`}
