@@ -155,7 +155,7 @@ async function loadData(retries=4){
 function page(p){document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x.dataset.page===p));let c=$('content');try{if(p==='dashboard')return dashboard(c);if(p==='produtos')return products(c);if(p==='categorias')return categories(c);if(p==='banners')return banners(c);if(p==='config')return Promise.resolve(config(c)).catch(e=>{console.error('Configurações:',e);c.innerHTML='<div class="panel"><h2>Configurações</h2><p class="sub">Erro ao abrir configurações: '+esc(e?.message||e)+'</p><button class="btn btn-primary" onclick="page(\'config\')">Tentar novamente</button></div>'})}catch(e){console.error('Página:',e);toast('Erro ao abrir esta seção: '+(e?.message||e))}}
 async function uploadSettingMedia(file,kind){
   const ext=(file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
-  const path=\`settings/\${kind}-\${Date.now()}-\${Math.random().toString(36).slice(2,8)}.\${ext}\`;
+  const path=`settings/${kind}-${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
   const up=await sb.storage.from('site-media').upload(path,file,{upsert:false,contentType:file.type,cacheControl:'31536000'});
   if(up.error)throw up.error;
   return sb.storage.from('site-media').getPublicUrl(path).data.publicUrl;
@@ -197,16 +197,16 @@ function renderSettingPreviews(s){
 }
 function config(c){
   const s={...defaults.settings,...db.settings,background:{...defaults.settings.background,...(db.settings.background||{})},fonts:{...defaults.settings.fonts,...(db.settings.fonts||{})}};
-  c.innerHTML=\`
+  c.innerHTML=`
     <div class="pagehead"><div><h1>Configurações</h1><p class="sub">Controle visual completo da vitrine, identidade, botões e textos.</p></div></div>
 
     <div class="panel">
       <div class="panelhead"><h2>Identidade da loja</h2></div>
       <div class="formgrid">
-        <div class="field"><label>Nome da loja</label><input id="cfgSiteName" value="\${esc(s.siteName||'')}"></div>
-        <div class="field"><label>Texto do botão de compra</label><input id="cfgButtonText" value="\${esc(s.buttonText||'Ver na Shopee')}"></div>
-        <div class="field full"><label>Descrição</label><textarea id="cfgDescription">\${esc(s.description||'')}</textarea></div>
-        <div class="field full"><label>Texto do rodapé</label><input id="cfgFooterText" value="\${esc(s.footerText||'')}"></div>
+        <div class="field"><label>Nome da loja</label><input id="cfgSiteName" value="${esc(s.siteName||'')}"></div>
+        <div class="field"><label>Texto do botão de compra</label><input id="cfgButtonText" value="${esc(s.buttonText||'Ver na Shopee')}"></div>
+        <div class="field full"><label>Descrição</label><textarea id="cfgDescription">${esc(s.description||'')}</textarea></div>
+        <div class="field full"><label>Texto do rodapé</label><input id="cfgFooterText" value="${esc(s.footerText||'')}"></div>
 
         <div class="field full">
           <label>Logotipo</label>
@@ -216,7 +216,7 @@ function config(c){
               <button type="button" class="btn" onclick="pasteSettingImage('logo')">Colar logo</button>
               <button type="button" class="btn" onclick="document.getElementById('cfgLogo').value='';document.getElementById('logoPreview').innerHTML='<span style=&quot;color:#888&quot;>Sem logotipo</span>'">Remover</button>
             </div>
-            <input id="cfgLogo" type="hidden" value="\${esc(s.logo||'')}">
+            <input id="cfgLogo" type="hidden" value="${esc(s.logo||'')}">
             <div id="logoPreview" class="media-preview"></div>
           </div>
         </div>
@@ -226,11 +226,11 @@ function config(c){
     <div class="panel">
       <div class="panelhead"><h2>Cores e aparência</h2></div>
       <div class="formgrid">
-        <div class="field"><label>Cor principal</label><div class="color-field"><input id="cfgPrimaryColor" type="color" value="\${/^#[0-9a-f]{6}$/i.test(s.primaryColor||'')?s.primaryColor:'#ee4d2d'}"><input id="cfgPrimaryText" value="\${esc(s.primaryColor||'#ee4d2d')}"></div></div>
-        <div class="field"><label>Cor secundária</label><div class="color-field"><input id="cfgSecondaryColor" type="color" value="\${/^#[0-9a-f]{6}$/i.test(s.secondaryColor||'')?s.secondaryColor:'#171717'}"><input id="cfgSecondaryText" value="\${esc(s.secondaryColor||'#171717')}"></div></div>
-        <div class="field"><label>Cor dos botões</label><div class="color-field"><input id="cfgButtonColor" type="color" value="\${/^#[0-9a-f]{6}$/i.test(s.buttonColor||'')?s.buttonColor:'#171717'}"><input id="cfgButtonTextColor" value="\${esc(s.buttonColor||'#171717')}"></div></div>
-        <div class="field"><label>Fundo da página</label><select id="cfgBgType" onchange="toggleBgMode()"><option value="color" \${s.background.type==='image'?'':'selected'}>Cor</option><option value="image" \${s.background.type==='image'?'selected':''}>Imagem</option></select></div>
-        <div class="field" id="bgColorField"><label>Cor do fundo</label><div class="color-field"><input id="cfgBgColor" type="color" value="\${/^#[0-9a-f]{6}$/i.test(s.background.color||'')?s.background.color:'#f6f6f4'}"><input id="cfgBgText" value="\${esc(s.background.color||'#f6f6f4')}"></div></div>
+        <div class="field"><label>Cor principal</label><div class="color-field"><input id="cfgPrimaryColor" type="color" value="${/^#[0-9a-f]{6}$/i.test(s.primaryColor||'')?s.primaryColor:'#ee4d2d'}"><input id="cfgPrimaryText" value="${esc(s.primaryColor||'#ee4d2d')}"></div></div>
+        <div class="field"><label>Cor secundária</label><div class="color-field"><input id="cfgSecondaryColor" type="color" value="${/^#[0-9a-f]{6}$/i.test(s.secondaryColor||'')?s.secondaryColor:'#171717'}"><input id="cfgSecondaryText" value="${esc(s.secondaryColor||'#171717')}"></div></div>
+        <div class="field"><label>Cor dos botões</label><div class="color-field"><input id="cfgButtonColor" type="color" value="${/^#[0-9a-f]{6}$/i.test(s.buttonColor||'')?s.buttonColor:'#171717'}"><input id="cfgButtonTextColor" value="${esc(s.buttonColor||'#171717')}"></div></div>
+        <div class="field"><label>Fundo da página</label><select id="cfgBgType" onchange="toggleBgMode()"><option value="color" ${s.background.type==='image'?'':'selected'}>Cor</option><option value="image" ${s.background.type==='image'?'selected':''}>Imagem</option></select></div>
+        <div class="field" id="bgColorField"><label>Cor do fundo</label><div class="color-field"><input id="cfgBgColor" type="color" value="${/^#[0-9a-f]{6}$/i.test(s.background.color||'')?s.background.color:'#f6f6f4'}"><input id="cfgBgText" value="${esc(s.background.color||'#f6f6f4')}"></div></div>
         <div class="field full" id="bgImageField">
           <label>Imagem de fundo</label>
           <div class="uploadbox">
@@ -239,7 +239,7 @@ function config(c){
               <button type="button" class="btn" onclick="pasteSettingImage('background')">Colar imagem</button>
               <button type="button" class="btn" onclick="document.getElementById('cfgBgImage').value='';document.getElementById('bgPreview').innerHTML='<span style=&quot;color:#888&quot;>Sem imagem de fundo</span>'">Remover</button>
             </div>
-            <input id="cfgBgImage" type="hidden" value="\${esc(s.background.image||'')}">
+            <input id="cfgBgImage" type="hidden" value="${esc(s.background.image||'')}">
             <div id="bgPreview" class="media-preview"></div>
           </div>
         </div>
@@ -249,10 +249,10 @@ function config(c){
     <div class="panel">
       <div class="panelhead"><h2>Tipografia</h2><p class="sub">Escolha fontes separadamente para textos, títulos, logo e botões.</p></div>
       <div class="formgrid">
-        <div class="field"><label>Fonte dos textos</label><select id="cfgFontBody">\${fontOptions(s.fonts.body)}</select></div>
-        <div class="field"><label>Fonte dos títulos</label><select id="cfgFontHeading">\${fontOptions(s.fonts.heading)}</select></div>
-        <div class="field"><label>Fonte do logo</label><select id="cfgFontLogo">\${fontOptions(s.fonts.logo)}</select></div>
-        <div class="field"><label>Fonte dos botões</label><select id="cfgFontButton">\${fontOptions(s.fonts.button)}</select></div>
+        <div class="field"><label>Fonte dos textos</label><select id="cfgFontBody">${fontOptions(s.fonts.body)}</select></div>
+        <div class="field"><label>Fonte dos títulos</label><select id="cfgFontHeading">${fontOptions(s.fonts.heading)}</select></div>
+        <div class="field"><label>Fonte do logo</label><select id="cfgFontLogo">${fontOptions(s.fonts.logo)}</select></div>
+        <div class="field"><label>Fonte dos botões</label><select id="cfgFontButton">${fontOptions(s.fonts.button)}</select></div>
       </div>
     </div>
 
@@ -268,7 +268,7 @@ function config(c){
     <div class="panel">
       <div class="panelhead"><h2>Salvar</h2><p class="sub">As alterações são gravadas diretamente no Supabase.</p></div>
       <button class="btn btn-primary" onclick="saveSettings()">Salvar todas as configurações</button>
-    </div>\`;
+    </div>`;
   renderSettingPreviews(s);
   toggleBgMode();
 }
