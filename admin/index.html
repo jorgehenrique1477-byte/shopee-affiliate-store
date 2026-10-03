@@ -297,7 +297,7 @@ async function saveSettings(){
       background:{type:$('cfgBgType').value,color:$('cfgBgText').value.trim()||$('cfgBgColor').value||defaults.settings.background.color,image:$('cfgBgImage').value.trim()},
       fonts:{body:$('cfgFontBody').value,heading:$('cfgFontHeading').value,logo:$('cfgFontLogo').value,button:$('cfgFontButton').value}
     };
-    const r=await sb.from('site_settings').upsert({id:1,data:data},{onConflict:'id',ignoreDuplicates:false}).select('id,data').single();
+    const r=await sb.from('site_settings').update({data:data}).eq('id',1).select('id,data').single();
     if(r.error)throw r.error;
     if(!r.data?.data)throw new Error('O Supabase não confirmou a gravação das configurações.');
     db.settings=r.data.data;
@@ -385,7 +385,6 @@ sb.auth.getSession().then(({data,error})=>{
   bootAdmin(data?.session||null);
 });
 /* runtime theme override */
-async function saveBanner(id){try{const data={title:$('b_title').value.trim(),subtitle:$('b_sub').value.trim(),image:$('b_img').value.trim(),link:$('b_link').value.trim(),active:$('b_active').checked,sort_order:Number($('b_order').value)||0,media_type:$('b_type').value};if(!data.image)return toast('Adicione uma imagem ou vídeo ao banner');let r=id?await sb.from('banners').update(data).eq('id',id):await sb.from('banners').insert(data);if(r.error)throw r.error;await loadData();closeModal();page('banners');toast('Banner salvo com sucesso')}catch(e){console.error(e);toast('Erro ao salvar banner: '+(e.message||'erro'))}}
 function applyTheme(){let dark=localStorage.getItem('adm_theme')==='dark';document.body.classList.toggle('dark',dark);if($('themeBtn'))$('themeBtn').textContent=dark?'☀ Claro':'☾ Escuro'}
 function toggleTheme(){let dark=!document.body.classList.contains('dark');document.body.classList.toggle('dark',dark);localStorage.setItem('adm_theme',dark?'dark':'light');if($('themeBtn'))$('themeBtn').textContent=dark?'☀ Claro':'☾ Escuro'}
 applyTheme();
