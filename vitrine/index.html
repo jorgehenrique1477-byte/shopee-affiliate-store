@@ -19,6 +19,7 @@ footer{margin-top:55px;background:#171717;color:#bbb;padding:35px 0}.footerrow{d
 
 @media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.navlinks{display:none}.search{width:220px}.hero h1{font-size:34px}}
 @media(max-width:650px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.pimg{height:170px}.hero{padding:28px 22px;min-height:270px}.hero h1{font-size:30px}.top{display:none}.nav{height:62px}.logo{font-size:18px}.search{width:150px}.adminbody{display:block}.side{width:100%;display:flex;overflow:auto;gap:5px;padding:8px}.side button{white-space:nowrap;width:auto}.main{padding:15px}.formgrid{grid-template-columns:1fr}.footerrow{display:block}.cards{gap:8px}.stat b{font-size:22px}}
+.catalog-retry{border:0;border-radius:8px;padding:10px 14px;background:var(--primary);color:#fff;font-weight:750}.empty small{display:inline-block;max-width:620px;overflow-wrap:anywhere;margin-top:7px}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL='https://alnfzpbciatrclamkied.supabase.co';
@@ -49,28 +50,45 @@ const defaults={
  settings:{siteName:'Ofertas Premium Shopee',description:'As melhores ofertas selecionadas e verificadas para você economizar.',buttonText:'Ver na Shopee',footerText:'© 2026 Ofertas Premium. Todos os direitos reservados.',primaryColor:'#ee4d2d',logo:''},
  categories:[{id:'cat1',name:'Eletrônicos',active:true},{id:'cat2',name:'Casa',active:true},{id:'cat3',name:'Moda',active:true},{id:'cat4',name:'Beleza',active:true}],products:[],banners:[],clicks:[],visits:[]
 };
-let db=structuredClone(defaults), currentCategory='Todos', loadingData=false;
+let db=structuredClone(defaults), currentCategory='Todos', loadingData=false, dataErrors={};
 function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
 function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function money(v){return 'R$ '+Number(v||0).toFixed(2).replace('.',',')}
 function showPublic(){document.getElementById('public').classList.remove('hide');renderPublic()}
 function showLogin(){/* ADM removido da vitrine */}
+async function readTable(table){
+ let result=await sb.from(table).select('*').order('sort_order',{ascending:true});
+ if(result.error && /sort_order|column .* does not exist|could not find the .* column/i.test(result.error.message||'')){
+  result=await sb.from(table).select('*');
+ }
+ if(result.error)throw result.error;
+ return result.data||[];
+}
 async function fetchData(){
  if(loadingData)return; loadingData=true;
  try{
   const [s,c,p,b]=await Promise.all([
-   sb.from('site_settings').select('*').eq('id',1).maybeSingle(),
-   sb.from('categories').select('*').order('sort_order',{ascending:true}),
-   sb.from('products').select('*').order('sort_order',{ascending:true}),
-   sb.from('banners').select('*').order('sort_order',{ascending:true})
+   sb.from('site_settings').select('*').eq('id',1).maybeSingle().then(r=>({data:r.data,error:r.error})).catch(error=>({data:null,error})),
+   readTable('categories').then(data=>({data})).catch(error=>({data:[],error})),
+   readTable('products').then(data=>({data})).catch(error=>({data:[],error})),
+   readTable('banners').then(data=>({data})).catch(error=>({data:[],error}))
   ]);
-  const err=[s,c,p,b].find(x=>x.error); if(err) throw err.error;
-  db.settings=s.data?{...defaults.settings,...s.data.data}:defaults.settings;
-  db.categories=(c.data?.length?c.data:defaults.categories).map(x=>({...x,sort_order:x.sort_order??x.order??0}));
-  db.products=(p.data||[]).map(x=>({...x,affiliateLink:x.affiliate_link,oldPrice:x.old_price})); db.banners=b.data||[];
+  dataErrors={};
+  if(s.error){dataErrors.settings=s.error.message||String(s.error);console.error('Supabase site_settings:',s.error)}
+  else db.settings=s.data?{...defaults.settings,...(s.data.data||s.data)}:structuredClone(defaults.settings);
+  if(c.error){dataErrors.categories=c.error.message||String(c.error);console.error('Supabase categories:',c.error);db.categories=[]}
+  else db.categories=(c.data||[]).map(x=>({...x,active:x.active??x.is_published??true,sort_order:x.sort_order??x.order??0}));
+  if(p.error){dataErrors.products=p.error.message||String(p.error);console.error('Supabase products:',p.error);db.products=[]}
+  else db.products=(p.data||[]).map(x=>({...x,active:x.active??x.is_published??true,image:x.image||x.image_url||'',images:x.images||x.gallery||[],oldPrice:x.old_price??x.oldPrice??x.compare_at_price??null,affiliateLink:x.affiliate_link||x.affiliateLink||x.external_url||x.link||''}));
+  if(b.error){dataErrors.banners=b.error.message||String(b.error);console.error('Supabase banners:',b.error);db.banners=[]}
+  else db.banners=(b.data||[]).map(x=>({...x,active:x.active??x.is_published??true,image:x.image||x.image_url||'',sort_order:x.sort_order??x.order??0}));
   renderPublic();
- }catch(e){console.error(e);toast('Não foi possível carregar os dados. Confira a configuração do Supabase.')}finally{loadingData=false}
+  if(dataErrors.products)toast('Falha ao carregar produtos. Veja a mensagem no catálogo.');
+  else if(dataErrors.categories||dataErrors.banners||dataErrors.settings)toast('Vitrine parcialmente carregada; alguns dados do servidor falharam.');
+ }catch(e){console.error('Falha inesperada ao carregar a vitrine:',e);dataErrors.products=e?.message||'Falha inesperada';renderPublic();toast('Não foi possível carregar o catálogo.')}
+ finally{loadingData=false}
 }
+function retryCatalog(){fetchData()}
 async function trackEvent(type,productId=null,productName='',path=location.pathname){
  try{await sb.from('analytics_events').insert({event_type:type,product_id:productId,product_name:productName,path})}catch(e){console.warn('analytics',e)}
 }
@@ -90,10 +108,10 @@ function renderProducts(){
  let q=(document.getElementById('searchInput')?.value||'').toLowerCase();
  let ps=db.products.filter(p=>p.active!==false).filter(p=>(currentCategory==='Todos'||p.category===currentCategory||(currentCategory==='Ofertas'&&p.oldPrice))).filter(p=>(!q||JSON.stringify(p).toLowerCase().includes(q)));
  const grid=document.getElementById('productGrid');
- if(!ps.length){grid.className='';grid.innerHTML='<div class="empty">Nenhum produto cadastrado ainda.<br><small>Adicione produtos pelo Painel ADM.</small></div>';return}
+ if(dataErrors.products){grid.className='';grid.innerHTML='<div class="empty" role="alert"><strong>Não foi possível carregar o catálogo.</strong><br><small>'+esc(dataErrors.products)+'</small><br><button class="btn btn-primary catalog-retry" onclick="retryCatalog()" style="margin-top:14px">Tentar novamente</button></div>';return}if(!ps.length){grid.className='';grid.innerHTML='<div class="empty"><strong>Nenhum produto publicado no momento.</strong><br><small>Os produtos aparecerão aqui quando houver itens ativos no catálogo.</small></div>';return}
  grid.className='grid';grid.innerHTML=ps.map(p=>`<article class="product"><div class="pimg" onclick="openImage('${esc(p.image||'')}','${esc(p.name)}')">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}">`:'<span>Sem imagem</span>'}</div><div class="pbody">${p.oldPrice?'<span class="badge">OFERTA</span>':''}<h3>${esc(p.name)}</h3><div><span class="price">${money(p.price)}</span>${p.oldPrice?'<span class="old">'+money(p.oldPrice)+'</span>':''}</div><button class="btn btn-primary" onclick="goShopee('${p.id}')">${esc(db.settings.buttonText)}</button></div></article>`).join('')
 }
-async function goShopee(id){let p=db.products.find(x=>x.id===id);if(!p)return;await trackEvent('click',id,p.name);window.open(p.affiliate_link||p.link||'https://shopee.com.br','_blank','noopener')}
+async function goShopee(id){let p=db.products.find(x=>String(x.id)===String(id));if(!p)return toast('Produto não encontrado.');const raw=p.affiliate_link||p.affiliateLink||p.external_url||p.link;if(!raw)return toast('Este produto ainda não tem link de afiliado cadastrado.');let url;try{url=new URL(raw);if(!['https:','http:'].includes(url.protocol))throw new Error('invalid protocol')}catch(e){return toast('O link deste produto é inválido. Avise a administração.')}const opened=window.open(url.href,'_blank','noopener,noreferrer');void trackEvent('click',p.id,p.name);if(!opened)toast('O navegador bloqueou a nova aba. Permita pop-ups para abrir a loja.')}
 function openImage(src,alt=''){if(!src)return;document.getElementById('lightboxImg').src=src;document.getElementById('lightboxImg').alt=alt;document.getElementById('lightbox').classList.add('show')}
 function closeImage(e){if(e)e.stopPropagation();document.getElementById('lightbox').classList.remove('show')}
 async function boot(){await fetchData();await trackEvent('visit',null,'',location.pathname)}
