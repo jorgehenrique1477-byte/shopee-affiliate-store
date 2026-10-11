@@ -20,6 +20,10 @@ footer{margin-top:55px;background:#171717;color:#bbb;padding:35px 0}.footerrow{d
 @media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.navlinks{display:none}.search{width:220px}.hero h1{font-size:34px}}
 @media(max-width:650px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.pimg{height:170px}.hero{padding:28px 22px;min-height:270px}.hero h1{font-size:30px}.top{display:none}.nav{height:62px}.logo{font-size:18px}.search{width:150px}.adminbody{display:block}.side{width:100%;display:flex;overflow:auto;gap:5px;padding:8px}.side button{white-space:nowrap;width:auto}.main{padding:15px}.formgrid{grid-template-columns:1fr}.footerrow{display:block}.cards{gap:8px}.stat b{font-size:22px}}
 .catalog-retry{border:0;border-radius:8px;padding:10px 14px;background:var(--primary);color:#fff;font-weight:750}.empty small{display:inline-block;max-width:620px;overflow-wrap:anywhere;margin-top:7px}
+.product-title{border:0;background:transparent;padding:0;text-align:left;color:inherit;font-weight:800;line-height:1.35;font-size:15px}.product-title:hover{color:var(--primary)}
+.detail-page{padding-top:28px;padding-bottom:40px}.detail-back{border:1px solid var(--border);background:#fff;color:#333;border-radius:9px;padding:10px 13px;font-weight:700;margin-bottom:20px}.detail-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:clamp(22px,4vw,54px);align-items:start;margin:8px 0 40px}.detail-photo{background:#fff;border:1px solid var(--border);border-radius:14px;min-height:360px;display:flex;align-items:center;justify-content:center;padding:22px}.detail-photo img{width:100%;height:min(58vh,520px);object-fit:contain}.detail-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--primary);text-transform:uppercase}.detail-copy h1{font-size:clamp(28px,4vw,42px);line-height:1.08;letter-spacing:-.035em;margin:12px 0}.detail-copy .detail-description{color:#666;line-height:1.7}.detail-price{display:flex;align-items:baseline;gap:10px;margin:22px 0}.detail-price strong{font-size:32px;letter-spacing:-.04em}.detail-price .old{text-decoration:line-through;color:#999;font-size:14px}.detail-disclaimer{font-size:12px;line-height:1.6;color:#777;border-top:1px solid var(--border);padding-top:14px}.detail-actions{display:grid;gap:9px;margin:18px 0}.detail-actions .btn{width:100%}.detail-note{font-size:12px;color:#777;line-height:1.6}.detail-related{margin:32px 0}.detail-empty{margin:32px 0;padding:38px 22px;background:#fff;border:1px solid var(--border);border-radius:14px}
+@media(max-width:700px){.detail-layout{grid-template-columns:1fr;gap:20px}.detail-photo{min-height:260px}.detail-photo img{height:360px}.detail-copy h1{font-size:30px}}
+
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL='https://alnfzpbciatrclamkied.supabase.co';
@@ -35,11 +39,12 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 </div>
 <div class="search"><input id="searchInput" placeholder="Buscar produto..." oninput="renderProducts()"><button>⌕</button></div>
 </div></header>
-<main class="container">
+<main class="container" id="homeMain">
 <section class="hero" id="hero"><div class="hero-content"><h1 id="heroTitle">Super Ofertas do Dia</h1><p id="heroText">As melhores ofertas selecionadas e verificadas para você economizar.</p><button class="btn btn-primary" onclick="showProducts()">Aproveitar ofertas →</button></div></section>
 <section><div class="section-title"><div><h2>Categorias</h2><p>Encontre o que você procura</p></div></div><div class="categories" id="categories"></div></section>
 <section><div class="section-title"><div><h2 id="productsTitle">Produtos em destaque</h2><p>Confira nossas recomendações</p></div></div><div id="productGrid" class="grid"></div></section>
 </main>
+<main class="container detail-page" id="productDetail" hidden></main>
 <footer><div class="container footerrow"><div><strong id="footerName">Ofertas Premium</strong><br><span id="footerText">© 2026 Ofertas Premium. Todos os direitos reservados.</span></div><div>Os produtos são vendidos e entregues pela Shopee.</div></div></footer>
 </div>
 
@@ -102,19 +107,32 @@ function renderPublic(){
  renderProducts();
 }
 function filterCategory(c){currentCategory=c;document.getElementById('productsTitle').textContent=c==='Todos'?'Produtos em destaque':c;renderProducts()}
-function showHome(){currentCategory='Todos';document.getElementById('productsTitle').textContent='Produtos em destaque';window.scrollTo({top:0,behavior:'smooth'});renderProducts()}
+function showHome(updateUrl=true){if(updateUrl){const u=new URL(location.href);u.searchParams.delete('produto');history.pushState({},'',u)}document.getElementById('productDetail').hidden=true;document.getElementById('homeMain').hidden=false;currentCategory='Todos';document.getElementById('productsTitle').textContent='Produtos em destaque';window.scrollTo({top:0,behavior:'smooth'});renderProducts()}
+function showProduct(id,updateUrl=true){
+ const p=db.products.find(x=>String(x.id)===String(id)||String(x.slug)===String(id));
+ const home=document.getElementById('homeMain'),detail=document.getElementById('productDetail');
+ home.hidden=true;detail.hidden=false;window.scrollTo({top:0,behavior:'smooth'});
+ if(updateUrl&&p){const u=new URL(location.href);u.searchParams.set('produto',p.slug||p.id);history.pushState({productId:p.id},'',u)}
+ if(!p){detail.innerHTML='<div class="detail-empty"><h1>Produto indisponível</h1><p>Este produto pode ter sido removido ou não está publicado no momento.</p><button class="btn btn-primary" onclick="showHome()">Voltar à vitrine</button></div>';return}
+ const cat=db.categories.find(c=>String(c.id)===String(p.category_id)||String(c.name)===String(p.category));
+ const previous=p.oldPrice&&Number(p.oldPrice)>Number(p.price)?'<span class="old">'+money(p.oldPrice)+'</span>':'';
+ const image=p.image?'<img src="'+esc(p.image)+'" alt="'+esc(p.name)+'">':'<span>Imagem não cadastrada</span>';
+ detail.innerHTML='<button class="detail-back" onclick="showHome()">← Voltar à vitrine</button><div class="detail-layout"><div class="detail-photo">'+image+'</div><div class="detail-copy"><span class="detail-kicker">'+esc(cat?.name||'Produto selecionado')+'</span><h1>'+esc(p.name)+'</h1><p class="detail-description">'+esc(p.description||'Confira as informações, variações e condições atualizadas diretamente na loja de origem.')+'</p><div class="detail-price">'+previous+'<strong>'+money(p.price)+'</strong></div><div class="detail-actions"><button class="btn btn-primary" onclick="goShopee(\''+String(p.id)+'\')">'+esc(db.settings.buttonText||'Ver na loja')+' ↗</button><button class="btn btn-light" onclick="showHome()">Continuar explorando</button></div><p class="detail-disclaimer">O preço e a disponibilidade podem mudar. A compra, o pagamento, a entrega e o atendimento são realizados pela loja externa.</p><p class="detail-note">Link de divulgação cadastrado pela administração. Não processamos pagamentos nesta plataforma.</p></div></div>';
+ void trackEvent('product_view',p.id,p.name,'?produto='+(p.slug||p.id));
+}
 function showProducts(){currentCategory='Todos';document.getElementById('productsTitle').textContent='Todos os produtos';document.getElementById('productGrid').scrollIntoView({behavior:'smooth'});renderProducts()}
 function renderProducts(){
  let q=(document.getElementById('searchInput')?.value||'').toLowerCase();
  let ps=db.products.filter(p=>p.active!==false).filter(p=>(currentCategory==='Todos'||p.category===currentCategory||(currentCategory==='Ofertas'&&p.oldPrice))).filter(p=>(!q||JSON.stringify(p).toLowerCase().includes(q)));
  const grid=document.getElementById('productGrid');
  if(dataErrors.products){grid.className='';grid.innerHTML='<div class="empty" role="alert"><strong>Não foi possível carregar o catálogo.</strong><br><small>'+esc(dataErrors.products)+'</small><br><button class="btn btn-primary catalog-retry" onclick="retryCatalog()" style="margin-top:14px">Tentar novamente</button></div>';return}if(!ps.length){grid.className='';grid.innerHTML='<div class="empty"><strong>Nenhum produto publicado no momento.</strong><br><small>Os produtos aparecerão aqui quando houver itens ativos no catálogo.</small></div>';return}
- grid.className='grid';grid.innerHTML=ps.map(p=>`<article class="product"><div class="pimg" onclick="openImage('${esc(p.image||'')}','${esc(p.name)}')">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}">`:'<span>Sem imagem</span>'}</div><div class="pbody">${p.oldPrice?'<span class="badge">OFERTA</span>':''}<h3>${esc(p.name)}</h3><div><span class="price">${money(p.price)}</span>${p.oldPrice?'<span class="old">'+money(p.oldPrice)+'</span>':''}</div><button class="btn btn-primary" onclick="goShopee('${p.id}')">${esc(db.settings.buttonText)}</button></div></article>`).join('')
+ grid.className='grid';grid.innerHTML=ps.map(p=>`<article class="product"><div class="pimg" onclick="openImage('${esc(p.image||'')}','${esc(p.name)}')">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">`:'<span>Sem imagem</span>'}</div><div class="pbody">${p.oldPrice?'<span class="badge">OFERTA</span>':''}<h3><button class="product-title" onclick="showProduct('${p.id}')">${esc(p.name)}</button></h3><div><span class="price">${money(p.price)}</span>${p.oldPrice?'<span class="old">'+money(p.oldPrice)+'</span>':''}</div><button class="btn btn-light" onclick="showProduct('${p.id}')">Ver detalhes</button><button class="btn btn-primary" onclick="goShopee('${p.id}')">${esc(db.settings.buttonText)}</button></div></article>`).join('')
 }
 async function goShopee(id){let p=db.products.find(x=>String(x.id)===String(id));if(!p)return toast('Produto não encontrado.');const raw=p.affiliate_link||p.affiliateLink||p.external_url||p.link;if(!raw)return toast('Este produto ainda não tem link de afiliado cadastrado.');let url;try{url=new URL(raw);if(!['https:','http:'].includes(url.protocol))throw new Error('invalid protocol')}catch(e){return toast('O link deste produto é inválido. Avise a administração.')}const opened=window.open(url.href,'_blank','noopener,noreferrer');void trackEvent('click',p.id,p.name);if(!opened)toast('O navegador bloqueou a nova aba. Permita pop-ups para abrir a loja.')}
 function openImage(src,alt=''){if(!src)return;document.getElementById('lightboxImg').src=src;document.getElementById('lightboxImg').alt=alt;document.getElementById('lightbox').classList.add('show')}
 function closeImage(e){if(e)e.stopPropagation();document.getElementById('lightbox').classList.remove('show')}
-async function boot(){await fetchData();await trackEvent('visit',null,'',location.pathname)}
+async function boot(){await fetchData();const productId=new URLSearchParams(location.search).get('produto');if(productId)showProduct(productId,false);await trackEvent('visit',null,'',location.pathname+location.search)}
+window.addEventListener('popstate',()=>{const productId=new URLSearchParams(location.search).get('produto');if(productId)showProduct(productId,false);else showHome(false)});
 window.addEventListener('focus',fetchData);
 window.addEventListener('pageshow',fetchData);
 document.addEventListener('DOMContentLoaded',()=>boot());
